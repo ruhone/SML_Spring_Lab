@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import se.sml.sdj.model.WorkItem;
@@ -21,13 +22,21 @@ import se.sml.sdj.model.WorkItem;
  */
 
 interface WorkItemRepository extends CrudRepository<WorkItem, Long> {
-
+	
+	WorkItem findByWorkItemNumber(String number);
+	
 	List<WorkItem> findByStatus(String lable);
 
 	List<WorkItem> findByDescriptionContaining(String value);
 
 	Long countByLable(String lable);
+	
+	@Query("select w from WorkItem w where w.issue IS NOT NULL")
+	List<WorkItem> getByIssue();
 
+//	@Query("select u.workItems from User u where u.username = ?1")
+//	List<WorkItem> findWorkItemsByUser(String name);
+	
 	@Transactional
 	List<WorkItem> removeByLable(String lable);
 }

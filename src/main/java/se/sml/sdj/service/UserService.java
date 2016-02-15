@@ -95,10 +95,10 @@ public class UserService {
 		}
 	}
 
-	public User updateStatus(String username, String status) {
+	public User updateStatus(String username, String status) throws ServiceException {
 		User user = userRepository.findByUsername(username);
 		user.setStatus(status);
-		return userRepository.save(user);
+		return save(user);
 		
 	}
 	// Lekstuga slutar här

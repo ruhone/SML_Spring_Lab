@@ -28,7 +28,7 @@ public class AppConfig {
 		config.setDriverClassName("com.mysql.jdbc.Driver");
 		config.setJdbcUrl("jdbc:mysql://localhost:3306/SML_Spring_Data_JPA_Lab?useSSL=false");
 		config.setUsername("root");
-		config.setPassword("password");
+		config.setPassword("root");
 
 		return new HikariDataSource(config);
 	}

@@ -2,10 +2,13 @@ package se.sml.sdj.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import se.sml.sdj.model.Issue;
+import se.sml.sdj.model.WorkItem;
 import se.sml.sdj.model.WorkItem;
 import se.sml.sdj.service.exception.ServiceException;
 
@@ -35,6 +38,25 @@ public class WorkItemService {
 		}
 	}
 	
+	public WorkItem updateStatus(String workItemNumber, String status) throws ServiceException {
+		WorkItem workItem = workItemRepository.findByWorkItemNumber(workItemNumber);
+		workItem.setStatus(status);
+		return save(workItem);
+	}
+	
+	public WorkItem addIssue(WorkItem workItem, Issue issue) throws ServiceException {
+		if (workItem.getStatus() == "Done") {
+			workItem.addIssue(issue);
+			workItem.setStatus("Unstarted");
+			return save(workItem);
+		}
+		else
+		{
+			throw new ServiceException("Can only add an issue when the work item is done ");
+		}
+		
+	}
+	
 	public Collection<WorkItem> findByStatus(String lable){
 		return workItemRepository.findByStatus(lable);
 	}
@@ -48,6 +70,11 @@ public class WorkItemService {
 		teamRepository.findUsersByTeam(name).forEach(u -> workItems.addAll(u.getWorkItem()));
 		return workItems;
 	}
+	
+	public Collection<WorkItem> getAllByIssue(){
+		return workItemRepository.getByIssue();
+	}
+	
 }
 
 
